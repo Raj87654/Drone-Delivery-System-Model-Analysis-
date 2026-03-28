@@ -106,13 +106,12 @@ python your_file_name.py
 - Real-time map integration (Google Maps API)
 - Live weather data integration
 - Dynamic route optimization
-- Web/App interface (React + Flask)
-- Advanced AI models (Random Forest / Neural Networks
+- Web/App interface 
+- Advanced AI models 
 
 
 ##  Author
 
 **Rajkumar M**
 
-⭐ If you like this project, give it a star on GitHub!
 
