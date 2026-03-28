@@ -7,7 +7,7 @@ This project simulates an **AI-powered drone delivery system** that decides whet
 - Shortest route (Graph Algorithm)
 - Battery consumption prediction (Machine Learning)
 - Safety conditions (Machine Learning)
-- -🌪️ Environmental & operational constraints
+- Environmental & operational constraints
 
 ##  Key Features
 
