@@ -31,8 +31,8 @@ This project simulates an **AI-powered drone delivery system** that decides whet
 - Built using **Logistic Regression**
 - Classifies delivery as:
 
-  - ✅ Safe
-  - ❌ Unsafe
+  - Safe
+  - Unsafe
 - Based on:
 
   - Obstacle distance
