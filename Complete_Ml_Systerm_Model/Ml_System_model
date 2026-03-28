@@ -94,7 +94,6 @@ def drone_system(start, end, weight, wind, available_battery, obstacle, area):
     if safety == 0:
         return " Delivery Rejected: Unsafe landing conditions"
 
-    # Step 4: Additional Rules
     if wind > 25:
         return " Delivery Rejected: High wind"
 
