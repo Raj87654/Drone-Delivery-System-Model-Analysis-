@@ -56,7 +56,7 @@ Combines all modules to make a final decision:
 - Python 
 - NumPy
 - Scikit-learn
-- Heapq (Priority Queue)
+- Heapq 
 - Graph Algorithm
 
 ## Workflow
