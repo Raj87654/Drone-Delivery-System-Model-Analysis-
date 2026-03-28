@@ -1,0 +1,117 @@
+import numpy as np
+import heapq
+from sklearn.linear_model import LinearRegression, LogisticRegression
+
+graph = {
+    'A': {'B': 5, 'D': 10},
+    'B': {'A': 5, 'C': 3},
+    'C': {'B': 3, 'D': 4},
+    'D': {'A': 10, 'C': 4}
+}
+
+def dijkstra_path(graph, start, end):
+    pq = [(0, start, [])]
+    visited = set()
+
+    while pq:
+        cost, node, path = heapq.heappop(pq)
+
+        if node in visited:
+            continue
+
+        path = path + [node]
+        visited.add(node)
+
+        if node == end:
+            return cost, path
+
+        for neighbor, weight in graph[node].items():
+            heapq.heappush(pq, (cost + weight, neighbor, path))
+
+    return float('inf'), []
+
+np.random.seed(42)
+n = 500
+
+distance = np.random.uniform(1, 20, n)
+weight = np.random.uniform(0.5, 5, n)
+wind = np.random.uniform(0, 20, n)
+
+battery = (distance * 2.5) + (weight * 5) + (wind * 1.5)
+battery += np.random.normal(0, 2, n)
+
+energy_load = distance * weight
+
+X_battery = np.column_stack((distance, weight, wind, energy_load))
+y_battery = battery
+
+battery_model = LinearRegression()
+battery_model.fit(X_battery, y_battery)
+
+def predict_battery(distance, weight, wind):
+    energy_load = distance * weight
+    return battery_model.predict([[distance, weight, wind, energy_load]])[0]
+
+obstacle = np.random.uniform(0.5, 10, n)
+wind_s = np.random.uniform(0, 30, n)
+area = np.random.choice([0, 1, 2], n)
+
+safe = []
+for i in range(n):
+    if obstacle[i] < 2 or wind_s[i] > 25 or area[i] == 0:
+        safe.append(0)
+    else:
+        safe.append(1)
+
+X_safe = np.column_stack((obstacle, wind_s, area))
+y_safe = np.array(safe)
+
+safety_model = LogisticRegression()
+safety_model.fit(X_safe, y_safe)
+
+def predict_safety(obstacle, wind, area):
+    pred = safety_model.predict([[obstacle, wind, area]])
+    return pred[0] 
+
+
+def drone_system(start, end, weight, wind, available_battery, obstacle, area):
+
+    print("\n DRONE DELIVERY ANALYSIS\n")
+
+    
+    distance, path = dijkstra_path(graph, start, end)
+    print(" Route:", " → ".join(path))
+    print(" Distance:", distance, "km")
+
+    required_battery = predict_battery(distance, weight, wind)
+    print(" Required Battery:", round(required_battery, 2), "%")
+    print(" Available Battery:", available_battery, "%")
+
+    if required_battery > available_battery:
+        return " Delivery Rejected: Not enough battery"
+    safety = predict_safety(obstacle, wind, area)
+
+    if safety == 0:
+        return " Delivery Rejected: Unsafe landing conditions"
+
+    # Step 4: Additional Rules
+    if wind > 25:
+        return " Delivery Rejected: High wind"
+
+    if weight > 5:
+        return " Delivery Rejected: Overweight"
+
+    return " Delivery Approved "
+
+result = drone_system(
+    start='A',
+    end='C',
+    weight=2,
+    wind=10,
+    available_battery=60,
+    obstacle=3,
+    area=2
+)
+
+print("\n FINAL RESULT:")
+print(result)
